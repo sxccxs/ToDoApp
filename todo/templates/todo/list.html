@@ -1,0 +1,151 @@
+{% extends 'todo/base/base.html' %}
+{% block title %}My ToDo List{% endblock %}
+
+{% block content %}
+<div class="page-content page-container" id="page-content">
+    <div class="padding">
+        <div class="row container d-flex justify-content-center">
+            <div class="col-md-12">
+                <div class="card px-3">
+                    <div class="card-body">
+                        <h4 class="card-title">Welcome, {{ user.username }} !!!</h4>
+                        <div class="add-items d-flex">
+                            <input type="text" class="form-control todo-list-input" placeholder="What do you need to do today?">
+                            <button class="add btn btn-primary font-weight-bold todo-list-add-btn">Add</button>
+                        </div>
+                        <div class="list-wrapper">
+                            {% csrf_token %}
+                            <ul class="d-flex flex-column todo-list">
+                                {% for task in uncompleted_tasks %}
+                                    <li value="{{ task.pk }}">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="checkbox" type="checkbox">
+                                                <i class="input-helper"></i>
+												<p>{{ task.text }}</p>
+                                            </label>
+                                        </div>
+                                        <i class="remove fas fa-times"></i>
+                                    </li>
+                                {% endfor %}
+                                {% for task in completed_tasks %}
+                                    <li value="{{ task.pk }}" class="completed">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="checkbox" type="checkbox" checked="checked">
+                                                <i class="input-helper"></i>
+                                                <p>{{ task.text }}</p>
+                                            </label>
+                                        </div>
+                                        <i class="remove fas fa-times"></i>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+(function($) {
+	'use strict';
+
+	$(function() {
+		var todoListItem = $('.todo-list');
+		var todoListInput = $('.todo-list-input');
+		const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+		todoListItem.on('change', '.checkbox',
+			function() {
+				let pk = $(this).closest('li').attr('value');
+				if ($(this).attr('checked')) {
+                    $(this).removeAttr('checked');
+                    $.ajax({
+						type: 'PUT',
+						url: "{% url 'list' %}",
+                        data: { pk: pk,
+                                completed: false
+                              },
+						success: function() {
+                            location.reload();
+							console.log(`Object with id ${pk} changed! New value - false`)
+						},
+						error: function(){
+							console.log('Error occurred on update')
+						},
+						headers: {'X-CSRFToken': csrftoken},
+					});
+				} else {
+                    $(this).attr('checked', 'checked');
+                    $.ajax({
+						type: 'PUT',
+						url: "{% url 'list' %}",
+                        data: { pk: pk,
+                                completed: true
+                              },
+						success: function() {
+                            location.reload();
+							console.log(`Object with id ${pk} changed! New value - true`)
+						},
+						error: function(){
+							console.log('Error occurred on update')
+						},
+						headers: {'X-CSRFToken': csrftoken},
+					});
+				}
+				$(this).closest("li").toggleClass('completed');
+			});
+
+		
+		$('.todo-list').on('click', '.remove', 
+				function() {
+					let pk = $(this).closest('li').attr('value');
+					$.ajax({
+						type: 'DELETE',
+						url: "{% url 'list' %}",
+						data: { pk:  pk},
+						success: function() {
+							location.reload();
+							console.log(`Object with id ${pk} deleted!`)
+						},
+						error: function(){
+							console.log('Error occurred')
+						},
+						headers: {'X-CSRFToken': csrftoken},
+					});
+				});
+		
+		$('.todo-list-add-btn').on("click", 
+			function(event) {
+				event.preventDefault();
+
+				var item = $(this).prevAll('.todo-list-input').val();
+
+				if (item) {
+                    todoListInput.val("");
+                    $.ajax({
+						type: 'POST',
+						url: "{% url 'list' %}",
+						data: {text: item},
+						success: function() {
+							location.reload();
+							console.log(`Object with text ${item} created!`)
+						},
+						error: function(){
+							console.log('Error occurred on creation')
+						},
+						headers: {'X-CSRFToken': csrftoken},
+					});
+				}
+
+			});
+
+	});
+})(jQuery);
+</script>
+{% endblock %}

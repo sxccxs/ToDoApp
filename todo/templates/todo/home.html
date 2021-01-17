@@ -1,0 +1,20 @@
+{% extends 'todo/base/base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="page-content page-container" id="page-content">
+    <div class="padding">
+        <div class="row container d-flex justify-content-center">
+            <div class="col-md-12">
+                <div class="card px-3">
+                    <div class="card-body card-home">
+                        <h2>Accomplish more today, free more tomorrow.</h2>
+                        <p>Life can be overwhelming, but it doesn't have to. This site lets you keep track of everything in one place, so you can get it all done and enjoy more peace of mind along the way.</p>
+                        <p>Just <a class="home_a" href="{% url 'register' %}">Sign up</a> to start using.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

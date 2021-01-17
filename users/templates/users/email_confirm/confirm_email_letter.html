@@ -1,0 +1,12 @@
+{% autoescape off %}
+Hi {{ user.username }},
+Please click to the link below to confirm your email.
+
+http://{{ domain }}{% url 'confirm_email_verification' uidb64=uid token=token %}
+
+If clicking the link above doesn't work, please copy and paste the URL in a new browser
+window instead.
+
+Sincerely,
+The ToDoApp site Team
+{% endautoescape %}
