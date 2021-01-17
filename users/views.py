@@ -51,7 +51,8 @@ class RegisterView(FormView):
                       'users/email_confirm/email_sent.html')
 
     def form_invalid(self, form):
-        for error in form.errors:
+        for error in form.errors.values():
+            print(error)
             messages.info(self.request, error.as_text()[2:])
         return self.render_to_response(self.get_context_data(form=form))
     
