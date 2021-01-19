@@ -23,9 +23,14 @@ class PasswordResetRequestView(FormView):
 
     def form_valid(self, form):
         email = form.cleaned_data['email']
-        user = get_user_by_email(email)
-        domain = get_current_site(self.request).domain
-        send_letter_for_password_reset(domain, user)
+        try:
+            user = get_user_by_email(email)
+        except User.DoesNotExist:
+            messages.info(self.request, 'User with this email does not exist!')
+            return self.render_to_response(self.get_context_data(form=form))
+        else:
+            domain = get_current_site(self.request).domain
+            send_letter_for_password_reset(domain, user)
         return redirect('password_reset_done')
 
     def form_invalid(self, form):
