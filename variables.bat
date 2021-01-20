@@ -1,19 +1,10 @@
 @echo off
-
 set SECRET_KEY=""
-
 set DATABASE_NAME=
-
 set DATABASE_USER=
-
 set DATABASE_PASSWORD=
-
 set DATABASE_HOST=
-
 set DATABASE_PORT=
-
 set EMAIL_USER=
-
 set EMAIL_PASSWORD=
-
 set EMAIL_PORT=

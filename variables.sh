@@ -1,17 +1,9 @@
 export SECRET_KEY=""
-
 export DATABASE_NAME=
-
 export DATABASE_USER=
-
 export DATABASE_PASSWORD=
-
 export DATABASE_HOST=
-
 export DATABASE_PORT=
-
 export EMAIL_USER=
-
 export EMAIL_PASSWORD=
-
 export EMAIL_PORT=
