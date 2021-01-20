@@ -1,4 +1,6 @@
-set SECRET_KEY=
+@echo off
+
+set SECRET_KEY=""
 
 set DATABASE_NAME=
 
