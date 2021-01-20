@@ -1,4 +1,4 @@
-export SECRET_KEY=
+export SECRET_KEY=""
 
 export DATABASE_NAME=
 
