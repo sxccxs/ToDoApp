@@ -12,7 +12,6 @@ function send_request(method, body){
     request.send(body);
 }
 
-
 const todo_list = document.querySelector('.todo-list');
 const remove = document.querySelectorAll('.remove');
 const add = document.querySelector('.add');
